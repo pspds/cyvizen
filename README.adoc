@@ -1,0 +1,106 @@
+= Cyvizen: Original Equipment Manufacturer (OEM)
+:toc: macro
+:toclevels: 2
+:showtitle:
+
+
+_Cyvizen OEM_ is a complete Linux based operating system built on several Open Source technologies, including _NixOS_ with a single design goal of achieving the fulcrum point between:
+
+* _anonymity <==> privacy_
+* _creativity <==> security_
+
+While hooking into emerging Digital ID provider interfaces
+
+_Cyvizen OEM_ is 100% Open Source via this repository, and contains https://docs.cyvizen.art[extensive documentation] of its features and functionalities.
+
+_Cyvizen OEM_ provides a secure, decentralised, distributed service platform, where *you* are in control of your personal data and leverages the _Cyvizen Binary_ included in this _OEM_ as the interface to these optional services.
+
+_Cyvizen OEM_ is a project of _Cyvive_ and embodies its *Scorched Earth* philosophy since the creation of Cyvizen's original prototype in 2016.
+
+toc::[]
+
+== What is Scorched Earth for Computers?
+
+https://techspective.net/2018/09/10/7-shocking-statistics-that-prove-just-how-important-laptop-security-is/[7 Shocking Statistics that prove just how important Laptop/Ultrabook security is] highlights:
+
+* A laptop is stolen every 53 seconds
+* 56% of thefts resulted in a data breach (your valuable or personally sensitive information leaked)
+
+This does not factor in physical damage, failure or loss.
+
+So what the heck is _Scorched Earth_? Simply put, it is the most aggressive thing you can do to any thing within you control, to burn it to the ground, by choice, knowing you have what is necessary to recover or rebuild from such a situation.
+
+_Cyvizen_ enabled machines, can do exactly that!
+
+But I have _Time Machine (OSX)_; _Full Disk Images (Windows Paid for Backups)_; _Dot File Management (Linux)_; or _Cloud Storage (DropBox et al)_ why would I care for _Scorched Earth_ capability?
+
+````
+The average time it takes most people to just reinstall all their software and configure their personalisation settings is over a month.
+````
+
+So now you see the dilemma, you *might* be able to piece back together your system on a new machine, but can you afford to be unproductive for a month while you do it? Can you afford to have your personal data leaked, sold, ransomed back to you in addition to reconstructing your machine?
+
+For the vast majority of us, the answer is no.
+
+
+_Cyvizens_ can be fully up and running from a _Scorched Earth_ or alternative scenario within a few hours!
+_Cyvizens_ don't typically have concern for data leaks as they https://grahamc.com/blog/erase-your-darlings/[erase their machine on every shutdown]
+_Cyvizens_ can have a external USB/SD double encrypted profile, and/or through the services ecosystem, an automatically synced encrypted cloud profile in one or more geo-locations of their choice.
+
+@keidrych tested many different manufacturers computers and found that Clevo's L140*U series was best suited for life on the road and durable enough to survive this lifestyle.
+
+== Who is Cyvizen for?
+
+_Cyvizen_ is aimed at *all* computer users, as an Operating System its architecture is crafted in such a way as to appear simple, while leveraging the power of NixOS infinitely customisable making _Cyvizen_ flexible enough to suit any needs of dedicated professionals. *One Operating System to rule them all*
+
+If your coming from a OSX or Windows background, then _Cyvizen_ will feel different, we make no apology for this as in the core architecture of _Cyvizen_ it became apparent early, that we needed to make a simple yet significant change in how we interact with Computers
+
+* _From_: What can I do on this computer? Or the computer telling you what you may do
+* _To_: Computer do this for me. Or leading a conversation with the computer
+
+Every single person on the planet should be able to be familiar with the _To_ approach adopted by _Cyvizen_ within an hour of use. And once you do, going back to the older style feels stragely complex.
+
+== When I need help?
+
+There are multiple options for assistance available, depending on if you choose to stick with _Cyvizen OEM_, on your own hardware, or on our recommended hardware from one of our preferred suppliers, and if your subscribed to any _Cyvizen_ services.
+
+https://docs.cyvizen.art[Extensive documentation] is available online. This is the same documentation that ships with _Cyvizen_.
+
+=== on your own hardware
+
+* GitHub Issues, community support, we (people associated with Cyvive) monitor GitHub issues on a best effort basis
+
+=== on hardware from one of our preferred suppliers
+
+* GitHub Issues
+* Email Support
+
+=== paid subscribers to _Cyvizen_
+
+* GitHub Issues
+* Email Support
+* Live Chat
+
+NOTE: 1:1 support is available to anyone at any time as a paid-for service
+
+== How do I get started?
+
+While _Cyvizen_ is suitable for any experience level, this Open Source repository, _Cyvizen OEM_ is optimised towards
+
+* Preferred Suppliers of Hardware
+* Linux Professionals
+
+=== Hardware Requirements
+
+_Cyvizen_ is optimised for _Clevo L140*U_ UltraBooks. These are what _Cyvizen_ is built on, and will give the smoothest experience.
+That being said, _Cyvizen OEM_ *should* install on any hardware that can provide the following requirements:
+
+* Intel Platform i5/i7
+* Intel Graphics (Nvidia, AMD are not officially supported by Cyvizen)
+* Intel WiFi
+* TPM2 Chipset
+* nVME Hard Disk
+
+_Cyvizen OEM_ is currently being ported to as an alternative to PureOS for Purism Librem Laptops
+
+TIP: You can purchase an UltraBook with Cyvizen installed from us, though this link: https://013pem62hv5.typeform.com/to/bphBErdy machine will be supplied with Cyvizen pre-installed by MetaBox Australia

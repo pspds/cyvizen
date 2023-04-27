@@ -1,0 +1,20 @@
+name: Feature Request
+description: New abilities for Cyvizen
+title: "[Feature]: "
+labels: ["type: feature", "state: inactive"]
+body:
+  - type: input
+    id: feature
+    attributes:
+      label: Suggested Feature
+      description: Describe the new feature in detail, for clarity this is something that _Cyvizen_ does not currenly have the capability of doing.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/cyvive/cyvizen-oem/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

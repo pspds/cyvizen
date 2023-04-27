@@ -1,0 +1,24 @@
+= Licensing
+
+== Open & Mixed Licenses
+
+Cyvizen OEM is a GitHub project https://github.com/cyvive/cyvizen[Cyvizen OEM] owned by https://cyvive.art[Cyvive] and licensed for redistribution under Mozilla Public License 2.0 (MPL-2.0).
+
+Cyvizen, leverages Open Source Software as part of its packaging and bundling. Cyvizen is a separate work, and while it may use Domain Syntax Language (DSL) or Application Interfaces (API) of upstream open source licenses, these interactions are the only similarities.
+
+Cyvizen, inheriting from NixOS may bundle non-free, proprietary, and open source software together through NixPkgs or GitHub, File Transfer Protocol (FTP) or any other source that the author uses to provide software to end users as a convenience. There is no obligation to use bundled software, and said software can be uninstalled or replaced by you at any time. Cyvive, Cyvizen and its authors accept no liability or warranty for software which it is not the proprietary author. Should you have a concern with bundled software licensing you would need to discuss directly with the respective author.
+
+Cyvizen leverages LUKS, and other cryptographic technologies these technologies are non-recoverable, as in should your loose or forget your passkey there is no way to unlock the device and recover your data. You, (a user, or Cyvizen) are responsible for keeping appropriate backups of keys and passphrases, used and accept full liability for any data loss should you loose or forget you keys and or passphrases.
+
+Various Governments might impose restrictions through legislation on cryptographic technologies, a https://www.gp-digital.org/world-map-of-encryption/[world map of such legislature is maintained by	GP Digital], GP Digital is not affiliated with Cyvive, Cyvizen or its authors and this data is provided as informational only, you accept responsibility for safe use, and compliance with your personal obligations.
+
+* NixOS, NixPkgs, and Nix are distributed under the MIT License
+* Linux is distributed under the GNU General Public License version 2
+
+== Closed Source Licenses
+
+* Cyvizen contains the Command Line Interface (CLI) `cyvizen`, this is closed source software, information on the features and functionality of this binary is available in this documentation at:
+** xref:cyvizen.adoc#_command_line_interface_cli[Cyvizen: Command Line Interface (CLI)]
+** xref:day-to-day.adoc#_structure_of_cyvizen[Day to Day: Structure of Cyvizen]
+** xref:security.adoc#_cyvizen_cli[Security: Cyvizen CLI]
+** xref:security.adoc#_usage_tracking_metrics[Security: Usage Tracking]

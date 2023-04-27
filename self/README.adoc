@@ -1,0 +1,1 @@
+Storage location for machine specific configuration, keys and information

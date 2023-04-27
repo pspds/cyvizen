@@ -1,0 +1,222 @@
+= Software
+
+== Operating System
+
+Cyvizen uses https://nixos.org[NixOS], a Language, Package Manager, and Linux Distribution as a platform for recovery from _Scorched Earth_. NixOS is one of the top 100 Linux Distributions, where a full list of available Linux Distributions is available from https://distrowatch.com/[Distro Watch]. NIX is the only one capable of this level of recovery from _Scorched Earth_ though.
+
+"`NIX can be the future of computing… if we can find a better way to explain it ~ Burke Libbey`"
+
+The simplest way we know how to explain what NIX does is to equate it to working on a car:
+
+* Working on your car in your garage, results may vary (unless your a car designer and manufacturer), is the normal packaging approach of software.
+* 3D printing a brand new car every time you make a change, then if you dislike your change just go back to the old one. _This is what NIX is like, so you are free to experiment and play in relative safety_.
+
+If you read the NixOS documentation https://nixos.org/manual/nixos/stable/index.html[NixOS Manual] there is discussion about a `configuration.nix` file, hardware settings, and many other under the hood features and functionality. In putting Cyvizen together we have taken care of the vast majority of this configuration to distill down the maximum functionality and ease of use for you. This means that hardware compatibility for supported platforms is a good match, and updates to Cyvizen are vetted against this hardware.
+
+TIP: Reach out should you have any questions, or desire more information
+
+=== Structure
+
+Linux tends to follow community adopted standards, one of these is the `/home/<your_cyvizen>` or `~/` directory for short where the _bulk_ of your individual _Cyvizen_ data will be mounted under when using _Cyvizen_ enabled machines.
+
+Historically, Unix programs were free to spread their data all over the $HOME directory, putting their data in dot-files (files starting with ".") or subdirectories such as `~/.vimrc`. The new specification is intended to make this behavior more predictable. I suspect this makes backups of application data easier, in addition to giving your home directory a tidier appearance. Not all applications adhere to this standard yet.
+
+_Cyvizen_ uses `tmpfs` for everything that is not _persisted_ or _linked_ directly to your _Cyvizen's_ storage profile. This means that anything you do not make _Cyvizen_ aware of will be lost on reboot with no way of recovery. For all software bundled as part of _Cyvizen_ we have _linked_ the relevant configuration and application state, but for any _new_ software that you install it will need to be done by you.
+
+According to http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html[FreeDesktop Standards] the following is the typical structure of your `~/` directory
+
+./home/<your_cyvizen>
+[,text]
+----
+/
+└── home
+    └── <your_cyvizen>
+        ├── .cache - ephemeral application data
+        ├── .config - application configuration
+        ├── .local
+        │   └── share - application data
+        ├── Desktop
+        ├── Documents
+        ├── Downloads - linked to machine, not your Cyvizen by default
+        ├── Music
+        ├── Pictures
+        ├── Public - files you intend to share with the world, or have
+        ├── Templates
+        └── Videos
+----
+
+You are free to modify this structure to suit your needs, this is just the typical FreeDesktop, industry, and user standard.
+
+If you wish to add another custom directory, you may do so by adding its information to the following files.
+
+./home-manager.nix
+[,nix]
+----
+xdg = {
+  userDirs.extraConfig = {
+    # NOTE example of adding an additional custom directory to your Cyvizen
+    # NOTE this directory *must* also be added to 'impermanence/default.nix'
+    XDG_MISC_DIR = "${config.home.homeDirectory}/Misc";
+}
+----
+
+./impermanence/default.nix
+[,nix]
+----
+[
+  "Misc"
+]
+----
+
+== Bundled
+
+The following is a list of all software that we Bundle with Cyvizen, the NixOS community does vet the software before releasing an update, however we don't use all this software ourselves, so should something not work as expected, feel free to raise a support ticket or contact us.
+
+If you've used Linux for a while then you may have noticed the volume of options for software is beyond massive, and each typically being a passion project of very skilled developers tend to be amazing in different ways. We were presented with two choices, bundle software to cover the needs of most people in Cyberspace, or just provide some recommendations and you discover everything for yourself.
+
+For now, we've tried to bundle software to ease the transition from other platforms. This means that our choices are _not_ targeted towards industry professionals in these fields, but rather on a balance of functionality and ease of use.
+
+Keep in mind that the *nix philosophy is to use specialised applications and pass the data between them, the same as would (should) be done in large planet scale data. So a one application that does everything as you may be familiar with if coming from Microsoft Windows isn't normal in Linux
+
+=== Common Alternatives to Microsoft Windows & Apple OSX
+
+[%autowidth.stretch]
+|===
+|Function |Linux |Windows |OSX
+
+|Audio Conversion |https://soundconverter.org/[Soundconverter] | |
+|Audio Editor |https://www.audacityteam.org/[Audacity] |Windows Photo Movie Editor |Apple iMovie
+|Calendar |https://apps.gnome.org/app/org.gnome.Calendar/[Calendar] |Calendar |
+|Camera |https://wiki.gnome.org/Apps/Cheese[Cheese] |Camera |
+|Calculator |https://github.com/Qalculate[QCalculate] |Calculator |
+|Clock |https://apps.gnome.org/app/org.gnome.clocks/[Clocks] |Clock |
+|Email |https://help.gnome.org/users/evolution/stable/[Evolution Mail & Calendar] |Windows Mail |Apple Mail
+|Firewall |https://github.com/evilsocket/opensnitch[OpenSnitch] |Windows Firewall |LittleSnitch
+|Image Editor (BitMap) |https://www.pinta-project.com/[Pinta] |Paint |Preview
+|Image Viewer |https://help.gnome.org/users/gthumb/stable/gthumb-introduction.html.en[gThumb] |Photo Viewer |Preview
+|Internet Browser |https://github.com/ungoogled-software/ungoogled-chromium[Chromium (ungoogled)] |Chrome |Chrome
+|Internet Browser |https://librewolf.net/[LibreWolf (FireFox core]) |Microsoft Edge |Safari
+|Media Player |https://docs.xfce.org/apps/parole/start[Parole] |Windows Media Player |
+|Office Suite |https://www.libreoffice.org/[LibreOffice] |Microsoft Office |Apple iWork
+|Password Vault |https://keepassxc.org/[KeePassXC] | |KeyChain
+|Text Editor |https://docs.xfce.org/apps/mousepad/start[MousePad] |TextPad |
+|Unified Chat |https://pidgin.im/ |Microsoft Teams |
+|Video Chat |https://meet.jit.si/[jitSi Meet] |Skype |
+|Video Editing |https://jliljebl.github.io/flowblade/[FlowBlade] |Windows Photo Movie Editor |Apple iMovie
+|Sticky Notes |https://github.com/linuxmint/sticky[Sticky] | |
+
+|===
+
+=== Graphical User Interface (GUI)
+
+[%autowidth.stretch]
+|===
+|Function |Name & Homepage
+
+|3D Modelling |https://www.blender.org/[Blender]
+|Bible |https://github.com/bibletime/bibletime[Bible Time]
+|Broadcasting |https://obsproject.com/[Open Broadcast Project]
+|Clipboard Manager |https://hluk.github.io/CopyQ/[CopyQ]
+|Comic Reader |https://yacreader.com/[YACReader]
+|Desktop Publishing |https://www.scribus.net/[Scribus]
+|Download Manager |https://persepolisdm.github.io/[Persepolis]
+|FTP Server/Client |https://filezilla-project.org/[FileZilla]
+|GUI Prototyping |https://pencil.evolus.vn/[Pencil]
+|Game Development |https://godotengine.org/[GoDot]
+|Task Management (TODOs) |https://wpitchoune.net/ptask/[PTaskwarrior]
+|Task Management (TODOs) (Shell Integration) |https://github.com/cinatic/taskwhisperer[TaskWhisperer] (Broken Upstream)
+|Image Compression |https://github.com/Huluti/Curtail[Curtail]
+|Image Editor (Photos) |https://inkscape.org/[Inkscape]
+|Image Editor (Vector) |https://www.gimp.org/[GIMP]
+|Linux Terminal |https://sw.kovidgoyal.net/kitty/[Kitty]
+|Metadata Cleaner|https://metadatacleaner.romainvigier.fr/[Metadata Cleaner] | |
+|PDF Editing |LibreOffice Draw
+|PDF Viewer |LibreWolf or Chromium
+|Photo Editing |https://rawtherapee.com/[RawTherapee]
+|Geographical Information System (GIS) |https://www.qgis.org/en/site/[QGIS]
+|Pomodoro Timer |https://gnomepomodoro.org/[Pomodoro]
+|Remote Desktop |https://remmina.org/[Remmina]
+|Secure File Transfer |https://github.com/schollz/croc[Croc]
+|System Monitor |https://apps.gnome.org/app/gnome-system-monitor/[GNOME System Monitor]
+|Translation |https://github.com/dialect-app/dialect/[Dialect]
+|UML/System Modelling |https://gaphor.org/[Gaphor]
+|Video Conversion |https://handbrake.fr/[Handbrake]
+|White/Background Noise |https://github.com/rafaelmardojai/blanket[Blanket]
+
+|===
+
+=== Command Line Interface (CLI)
+
+[%autowidth.stretch]
+|===
+|Function |Name & Homepage
+
+|Download Manager |https://aria2.github.io/[aria2]
+|Free Image Search |https://github.com/mikf/gallery-dl/blob/master/docs/supportedsites.md[gallery-dl (CLI)]
+|Fuzzy Search |https://github.com/junegunn/fzf[FZF]
+|Mount Management |https://github.com/jamielinux/bashmount[BashMount]
+|Text Editor |https://micro-editor.github.io/[Micro Editor]
+|Task Management (TODOs) |https://taskwarrior.org/[Taskwarrior]
+|Time Management |https://tailordev.github.io/Watson/[Watson]
+|Trash Manager |https://github.com/oberblastmeister/trashy[Trashy]
+|YouTube Downloader |https://github.com/yt-dlp/yt-dlp[YT-DLP]
+|Window Positioning Manager |https://www.linux-magazine.com/Issues/2017/205/Tutorial-Devilspie2[Devilspie2]
+
+|===
+
+=== Linux CLI Replacements
+
+[%autowidth.stretch]
+|===
+|Command |Aliased to
+
+|`cat` |https://github.com/sharkdp/bat[bat]
+|`tree` |https://dystroy.org/broot/[broot]
+|`ls` |https://the.exa.website/[exa]
+|`cd` |https://github.com/ajeetdsouza/zoxide[Zoxide]
+|`top` |https://github.com/aristocratos/bpytop[BashTop Python]
+
+|===
+
+=== Comparison Information
+
+* https://thegimptutorials.com/gimp-vs-inkscape/[GIMP vs Inkscape, when to use]
+* https://www.designbuckle.com/gimp-vs-krita/[GIMP vs Krita, when to use] use Krita for digital art due to its great brush selection and intuitive painting model.
+* https://www.maketecheasier.com/fix-cant-type-in-terminal-issue-linux/[Blind Typing] issue when terminal no longer accepts text in Linux
+* https://itsfoss.com/pdf-editors-linux/[PDF Editor Comparison]
+* PDF Editing, https://code-industry.net/masterpdfeditor/[MasterPDF] is our recommended choice, if you need more functionality than LibreOffice Draw, however its a paid-for product.
+* https://asciidoctor.org/docs/what-is-asciidoc/[Why use ASCIIDoctor]
+* https://www.theregister.com/2021/11/19/friday_foss_fest/[Unified Chat Discussion], note https://github.com/TheGoddessInari/hamsket[Hamsket] is the free alternative to RamBox, we recommend Pidgin as it comes from a massive legacy of simplicity and cross-compatibility it also works with I2P. A https://www.digitaltrends.com/computing/managing-work-with-rambox/[good article] on why people use these kind of workspace apps.
+* https://github.com/sonnyp/Tangram[Tangram] is an alternative option to Pidgin primarily as some people prefer it over Pidgin, _however_ Tangram has zero anonymising & privacy features so we recommend to *only use it for chat* or things you don't mind giving 100% visibility into what else you are doing on Tangram. Alternatively you may wish to try https://www.reddit.com/r/firefox/comments/rhpog8/how_to_use_firefox_as_a_workspace_app_browser/?context=3[Firefox as a workspace app]
+* https://www.playonlinux.com[Play On Linux] allows you to use some Windows Programs on Linux, its not bundled by default as there can be many tricks to get apps working
+* https://www.designbuckle.com/scribus-vs-adobe-indesign/[Scribus vs Adobe Indesign]
+* https://opensource.com/alternatives/minecraft[MineCraft Alternatives]
+* https://www.reddit.com/r/linux/comments/s8gxbv/comment/ideu49s/?utm_source=share&utm_medium=web2x&context=3[Photo Management in Linux]
+* Dialect by default uses *Google Translate* you can change this to one of the more private options in its preferences TODO
+* Gaphor is great, but we suggest using ASCIIDoctor directly although it may be faster to start with Gaphor. ASCIIDoctor has significant advantages with software development
+
+== Full-Text Search
+
+Coming Soon
+https://github.com/cyvive/cyvizen/projects?query=is%3Aopen[Cyvizen Roadmap & Development Tracker]
+
+== Discovery
+
+The single most challenging thing about using Linux is finding the application that suits your workflow the best, after all most Linux apps follow the Linux philosophy of doing one thing amazingly and that's it so you pipe your data between them.
+
+In your quest for the perfect Cyvizen setup to maximise your productivity here are some locations to aid in your search.
+
+Software discovery for your Cyvizen utilises the following phases:
+1. Searching
+2. Trialing
+3. Permanently Installing
+
+The difference between _Permanently Installing_ and _Trialing_ is adding the package to your Cyvizens configuration and saving any relevant configuration directories
+
+=== Searching
+
+* https://www.reddit.com/r/unixporn/[Reddit /unixporn] tends to be a favoured stop for trialing some cool feature or making your Cyviven more beautiful
+* https://github.com/nodiscc/awesome-linuxaudio[Awesome Linux Audio] for those who wish to create music
+* https://extensions.gnome.org/[Extensions to GNOME Shell]
+* https://www.gnome-look.org/[Gnome Look] many different themes for parts of GNOME
+* https://search.nixos.org/options?channel=22.11[*NixOS* Options] This and the next one NixPkgs will be your most commonly visited locations

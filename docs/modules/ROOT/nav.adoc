@@ -1,0 +1,57 @@
+.Initial Setup
+* xref:initial-setup.adoc#_librewolf[LibreWolf]
+* xref:initial-setup.adoc#_chromium[Chromium]
+* xref:initial-setup.adoc#_keepassxc[KeePassXC]
+
+.Day to Day
+* xref:day-to-day.adoc#_networking[Networking]
+* xref:day-to-day.adoc#_terminal_client[Terminal Client]
+* xref:day-to-day.adoc#_editing_configuration_files[Editing Configuration Files]
+* xref:day-to-day.adoc#_testing_applying_persisting_changes[Testing, Applying, Persisting Changes]
+* xref:day-to-day.adoc#_structure_of_cyvizen[Structure of Cyvizen]
+* xref:day-to-day.adoc#_configuration_nix[configuration.nix]
+* xref:day-to-day.adoc#_nixos_nix[nixos.nix]
+* xref:day-to-day.adoc#_home_manager_nix[home-manager.nix]
+* xref:day-to-day.adoc#_machines[Machines]
+* xref:day-to-day.adoc#_pkgs[Pkgs]
+* xref:day-to-day.adoc#_secrets[Secrets]
+
+.Cyvizen
+* xref:cyvizen.adoc#_philosophy[Philosophy]
+* xref:cyvizen.adoc#_approach[Approach]
+* xref:cyvizen.adoc#_cyvive_scorched_earth[Cyvive: Scorched Earth]
+* xref:cyvizen.adoc#_cloud_profile[Cloud Profile]
+* xref:cyvizen.adoc#_multi_machine[Multi-Machine]
+* xref:cyvizen.adoc#_multi_user[Multi-User]
+* xref:cyvizen.adoc#_work_profiles[Work Profile(s)]
+* xref:cyvizen.adoc#_command_line_interface_cli[Command Line]
+* xref:cyvizen.adoc#_graphical_user_interface_gui[Graphical Application]
+
+.Hardware
+* xref:hardware.adoc#_printing[Printing]
+* xref:hardware.adoc#_scanning[Scanning]
+* xref:hardware.adoc#_crypto_wallets[Crypto Wallets]
+* xref:hardware.adoc#_encryption_keys[Encryption Keys]
+
+.Software
+* xref:software.adoc#_operating_system[Operating System]
+* xref:software.adoc#_bundled[Bundled]
+* xref:software.adoc#_full_text_search[Full Text Search]
+* xref:software.adoc#_discovery[Discovery]
+
+.Support
+* xref:support.adoc#_updates[Updates]
+* xref:support.adoc#_upgrades[Upgrades]
+* xref:support.adoc#_free_options[Free Options]
+* xref:support.adoc#_commercial_options[Commercial Options]
+* xref:support.adoc#_roadmap[Roadmap]
+
+.Security
+* xref:security.adoc#_linux_unified_key_setup_luks[Linux Unified Key Setup]
+* xref:security.adoc#_camera[Camera]
+* xref:security.adoc#_microphone[Microphone]
+* xref:security.adoc#_usb[USB]
+* xref:security.adoc#_usage_tracking_metrics[Usage Tracking]
+
+.Licensing
+* xref:licensing.adoc#_open[License Advisory]

@@ -1,0 +1,41 @@
+= Welcome Cyvizen
+
+[TIP]
+====
+This documentation is available at anytime from
+
+* Browsers Start / Home Page
+* `~/Offline/cyvizen/index.html`
+* https://docs.cyvizen.art/
+====
+
+== Getting Started
+
+Main functionality is located on the left of the screen, in-page navigation on the right
+
+TIP: Full-Text search is available in the search bar at the top of the page
+
+=== Launching Applications
+
+* Swing your mouse up to the top left corner of the screen
+* Press _<meta/windows> key_
+
+Both do the same thing, bringing the meta search, favourite applications, and all applications listing (bottom of screen).
+
+=== Initial Setup
+
+IMPORTANT: Your Cyvizen is *mostly* setup on install, but not fully setup as we are unable to automate everything at this time. To finish setting up your Cyvizen follow the steps in xref:initial-setup.adoc[Initial Setup]
+
+=== Next Steps
+
+After xref:initial-setup.adoc[Initial Setup] has been completed we suggest you familiarize yourself with the most common functions of Cyvizen:
+
+* xref:day-to-day.adoc#_networking[Connecting to WiFi]
+* xref:software.adoc#_bundled[Equivalent Software for Microsoft Windows & OSX]
+* xref:software.adoc#_discovery[Software Discovery]
+* xref:day-to-day.adoc#_structure_of_cyvizen[Customising Cyvizen]
+* xref:hardware.adoc#_printing[Printing]
+* xref:cyvizen.adoc#_backup[Backup & Restore]
+
+TIP: We care about your user experience and have multiple xref:support.adoc[support options available]
+

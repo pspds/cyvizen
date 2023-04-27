@@ -1,0 +1,79 @@
+= Hardware
+Intel sgx - https://news.ycombinator.com/item?id=11007060
+
+== Printing
+
+[TIP]
+====
+Printer Work Group has list of printers that support the Internet Print Protocol (IPP) as maintained by the hardware manufacturers
+
+* https://pwg.org/printers
+====
+
+If your printer still is unavailable, then you will need to troubleshoot or manually install the correct driver for it. Information on these options is available on https://nixos.wiki/wiki/Printing[NixOS Wiki:Printing]. Uncomment the line in `nixos.nix` and add the required driver information
+
+.nixos.nix
+[,nix]
+----
+# printing.drivers = with pkgs; [
+#		INSERT_DRIVER
+#		INSERT_DRIVER_OPTIONAL
+# ];
+----
+
+== Scanning
+
+TIP: Scanner Access Now Easy (SANE) is the Linux project for interfacing with scanners and they maintain a http://www.sane-project.org/sane-supported-devices.html[list of compatible scanners]
+
+Scanners that support either *Apple AirScan (eSCL)*, or *Microsoft WSD (Web Services for Devices) or WS-Scan* may also work.
+
+You can see what scanners NixOS can detect by executing the following command:
+.list scanners
+[,sh]
+----
+$ scanimage -L
+----
+
+If it is a network scanner and NixOS isn't detecting it, then you can try
+
+.nixos.nix
+[,nix]
+----
+hardware.sane.netConf = "INSERT_IP_OF_SCANNER";
+----
+
+== Crypto Wallets
+
+=== Ledger
+
+https://www.ledger.com/
+
+.nixos.nix
+[,nix]
+----
+hardware.ledger.enable = true;
+----
+
+=== BitBox
+
+https://shiftcrypto.ch/
+
+.nixos.nix
+[,nix]
+----
+hardware.bitbox.enable = true;
+----
+
+== Encryption Keys
+
+Should you choose you can use https://onlykey.io/[OnlyKey], as a second touch to unlock:
+
+* LUKS, unlock your physical machine on boot
+* KeePassXC, unlock your password vault
+* FIDO2 WebSites
+
+.nixos.nix
+[,nix]
+----
+hardware.onlykey.enable = true;
+----

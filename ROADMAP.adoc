@@ -1,0 +1,16 @@
+= Roadmap
+
+_Cyvizen OEM_ is ready for production deployment. However there are additional features & functionality that would provide value beyond what is currently available.
+
+Most of these require upgrades / reconfiguration / customisation to NixOS, and may not be a small investment of time to bring to existence.
+
+== Possibilities (in no particular order)
+
+* Hardened Kernel, NixOS has a hardened profile, however this is a outdated and causes many incompatibilities. https://codeberg.org/a13xp0p0v/kconfig-hardened-check would provide a more suitable alternative
+* Cyvizen Grub Theme, much internal discussion as the themeless NixOS option looks quite good
+* Full Offline Cache of store packages so _Cyvizens_ don't need to see downloading... building... etc on first boot
+* Default terminal support for GIO, as dconf default terminal depreciated. https://discussion.fedoraproject.org/t/set-default-terminal-in-gnome/77341/8
+* More SOPS for Machine information leveraging TPM2
+* Dropping of ROOT account or SUDO elevation. Due to the nature of Cyvizen's optimisations there does not seem to be a need for SUDO beyond sudo nixos-rebuild. As such sudo could be restricted to just this command without any potential disadvantages
+* Recoll integration, ripgrep all is available, but recoll may be more user friendly
+

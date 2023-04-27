@@ -1,0 +1,31 @@
+= Extra(s) worth considering
+
+== Email: upgrade to notmuch
+
+* https://www.reddit.com/r/commandline/comments/p36vp0/comment/h8pyx53/?utm_source=share&utm_medium=web2x&context=3
+* https://opensource.com/article/18/8/love-alpine
+
+== Booting
+
+=== Coreboot
+
+https://www.coreboot.org/[coreboot] is supported by NixOS, and _may_ work with Cyvizen OEM installed machines, you can check for verified as working on https://doc.coreboot.org/mainboard/index.html[Coreboot: Mainboard-specific documentation].
+
+CAUTION: conversion to coreboot requires disassembly of the machine, and using a secondary device to wipe the BIOS from the Mainboard. This *is* a warranty voiding process and *will* reset your _machineID_ it is outside of our support model
+
+=== PureBoot
+
+https://docs.puri.sm/PureBoot.html[Purism PureBoot] is a secured boot process that seeks to block, interfere or strip out some mandated features of hardware manufacturers
+
+* Removal of Intel Management Engine
+* Coreboot BIOS replacement
+* Tamper evidence GPG Keys checks for tampering of BIOS, Linux Kernel, and GRUB config
+* USB security token to verify untampered boot
+
+== Hardware Keys: onlykey
+
+== Commercial Support
+
+== Internet Radio
+
+* https://github.com/hslbck/gnome-shell-extension-radio

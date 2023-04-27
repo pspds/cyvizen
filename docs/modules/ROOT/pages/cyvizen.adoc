@@ -1,0 +1,149 @@
+= Cyvizen
+
+== Philosophy
+
+=== What's in a name
+
+*Cy*(_ber) (_sur_)*vi*(_al_) (_Den_)*izen*
+* *Cyber:* "`culture of the information age`"
+* *Survival:* "`continuing to exist despite difficult circumstances`"
+* *Denizen:* "`a person, animal, or plant that lives or is found in a particular place`"
+
+Cyvizen is built on the concepts of https://cyvive.art[Cyvive], where you have the ability to *Scorched Earth* in this instance your technology and recovery rapidly with minimal to no loss.
+
+Cyvizen builds on these concepts and philosophy to to where it is our hope you are able to _survive_ within _cyberspace_ as a native creature (_denizen_) born within this environment.
+
+=== Achieving Equilibrium
+
+Cyvizen was constructed to achieve, in addition to _Scorched Earth_ capability an equilibrium between:
+* Anonymity	"`being like everyone else`"		|| Privacy "`removal of everything that links you as you`"
+* Production "`efficiency of using tools`"	|| Security "`ensuring others don't use your tools`"
+* while converging towards trustable Digital Identity
+
+Ironically, these are conflicting or diametrically opposing directions, so it is no small feat to achieve equilibrium between them
+
+At its core, your configuration choices for your Cyvizen are tiny, only a few KiloByte in size which is why Cyvizen is effective towards trustable Digital Identity. Irrespective of what platform is used for Digital Identity your configuration, secrets, and key information can be linked safely to it by way of Cyvizen, or at least this is our hope as the world moves towards Digital Identity
+
+=== Embodiment
+
+To embody the Cyvizen way, only a small mind or paradigm shift is required. *Creativity drives Innovation*, so any restriction on creativity of mankind hinders innovation! We must accept that everything in this life is temporary, that you are not an Identity (ID) even your Cyvizen is different to who you are as a man or woman of mankind. However _all_ corporations give you a unique ID for your persons interactions with them.
+
+So those who Cyvizen *choose* to regain their control over technology by leveraging the power of _Scorched Earth_ and in some cases building their life around this capability. By doing this _you_ can recover your innovations, your creativity, and healthy interactions with corporations and those who work for them
+
+=== Technology Requirements
+
+Cyvizen as a platform can operate on most computers that can support Linux, however in reality the vast majority of hardware manufacturers prioritize Microsoft Windows over Linux support for Firmware and Drivers reducing the pool of fully compatible hardware.
+
+In saying this, if Cyvizens are to maintain the _Scorched Earth_ philosophy of <<_cyvive,Cyvive>> then Phones, Ultrabooks, Laptops, Computers should all meet the following criteria
+
+. Cost efficient
+. Replaceable
+. Portable
+. Secure
+
+For more information see: TODO
+
+== Approach
+
+1. Everything on Internet will be Visible
+** *when* is your choice
+2. keep pace with technology
+** Hardware Keys - TOTP, FIDO2 & OTP support
+** Upgrade machines/phones < 18 months
+** N+1 minimum redundancy
+3. Live in plain sight
+** void _Brave/TOR/Private Browsing_
+** FireFox > Chromium
+** Computer > Phone
+
+[NOTE]
+====
+* TOTP, FIDO2, OTP are technologies to increase security of passwords and move closer towards a validation of ID.
+* N+1 is a redundancy approach where for every system at least one backup or alternative option is available
+====
+
+== Cyvive: Scorched Earth
+
+https://cyvize.art[Cyvive.art]
+
+== Cloud Profile
+
+Your _Cyvizen_ is more than just the computer or machine that you are using, it is designed to be a _Cyberspace Denizen_ and has a profile component capable of being shared between multiple computers and devices.
+
+This is best explained through the `cyvizen.saveTo` configuration key in `configuration.nix` as described in detail: xref:day-to-day.adoc#_persistence_or_saveto[Day to Day, Persistence or saveTo].
+
+Your _Cyvizen Profile_ has the following benefits:
+
+* LUKS encrypted with _whirlpool-aes-xts-plain64-512_ cypher due to https://blog.elcomsoft.com/2020/08/breaking-luks-encryption/[lowest hash rates for breaking]
+* Snapshot of profile state taken every system boot
+* On the fly snapshot taken every hour
+
+== Multi-Machine
+
+IMPORTANT: Subscription only feature
+
+By default _Cyvizen_ is a single machine install as your profile data is encrypted, and synchronising data between machines without decrypting the disk first is a difficult process.
+
+You are free to install _Cyvizen OEM_ on as many machines as you like, but for safety and integrity of your profile data your _Cyvizen_ can only be enabled on one machine at a time and enabling another machine without a Support Subscription will flag all other machines to remove your profile information.
+
+Should you wish to migrate your _Cyvizen_ data between machines without a subscription you can complete the following steps
+
+[,sh]
+----
+# on existing machine
+$ cyvizen sync to --offline <usb/sd/hard-disk>
+$ cyvizen support --show-id
+# install Cyvizen OEM on new machine
+# Answer yes to question asking if you wish to make this machine your _home_ machine
+# or, on existing machine run
+$ cyvizen machine profiles add --home <your cyvizenID>
+----
+
+== Multi-User
+
+IMPORTANT: Subscription only feature
+
+By default _Cyvizen_ is a single user install, however it is possible to allow up to 7 people to share a single machine provided enough physical resources are available on the machine to do so.
+
+Each user has their own profile, and <<_work_profile,specialisation>> ability and any user with a support subscription can enable or disable multi-user on a machine.
+
+WARNING: disabling multi-user will delete the profiles of other users from the machine, if their data has not been synchronised to the cloud it will be lost!
+
+[,sh]
+----
+# Enable Multi-User by
+$ cyvizen machine --profiles
+# Disable Multi-User by
+$ cyvizen machine --no-profiles --confirm-other-profiles-safe-to-delete
+----
+
+== Work Profile(s)
+
+IMPORTANT: Subscription only feature
+
+_Cyvizen_ is *the* simplest Bring Your Own Device (BYOD) option for organisations to use. Because each _cyvizen_ and _machine_ have a unique identifiers, configuration to convert a machine to a suitable work-environment and secrets for that work environment can be sent to a person without concern
+
+1. Organisation generates a Cyvizen Specialisation for your cyvizenID, and optionally your current machineID if binding a profile exclusively to a machine is an organisational requirement
+2. Organisation requests encryption key for your CyvizenID
+3. Organisation sends you an email with attachment containing encrypted configuration & secret information
+4. copy the attachment to `/tmp/<name of file>`
+5. `cyvizen machine specialisation add <name of file>`
+6. `cyvizen config apply`
+7. `cyvizen config persist`
+
+When you reboot the machine you have the option to boot into a specialised organisation configuration or your normal configuration.
+
+Removing the specialisation is as simple as:
+
+1. `cyvizen machine specialisation remove <name>`
+2. `cyvizen config persist`
+3. reboot machine
+
+== Command Line Interface (CLI)
+
+The CLI has detailed help information for each command, and supports autocomplete `<tab key>` from any xref:day-to-day.adoc#_terminal_client[Terminal Client Window] use the command `cyvizen`
+
+== Graphical User Interface (GUI)
+
+Coming Soon
+https://github.com/cyvive/cyvizen/projects?query=is%3Aopen[Cyvizen Roadmap & Development Tracker]

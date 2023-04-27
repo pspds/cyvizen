@@ -1,0 +1,51 @@
+= Security
+
+== Linux Unified Key Setup (LUKS)
+
+Is the standard for encrypting block data at rest within the Linux Ecosystem. It is constantly reviewed by security professionals and has been shown to provide a _considered secure_ approach for _data at rest_.
+
+https://blog.elcomsoft.com/2020/08/breaking-luks-encryption/[Breaking LUKS Encryption] contains consumer friendly information about what the technology does and how _technically_ any hash would be suitable for LUKS encryption.
+
+NOTE: We are constantly looking for ways to improve security without compromising productivity, should you have a suggestion or alternative technology feel free to raise a GitHub issue at: https://github.com/cyvive/cyvizen/issues
+
+== Camera
+
+[TIP]
+====
+If you opted for _Cyvizen OEM_ to be pre-installed on a _Clevo L14**U_ platform then a BIOS toggle key is available: <Fn> + <F10> will disable/re-enable the camera.
+
+You will need to activate this topple every time you turn on the computer, however it works irrespective of an application respecting FreeDesktop privacy settings.
+
+At this time there is no status icon to show if Camera has been enabled or disabled, GNOME is working on adding this https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/2500[feature].
+====
+
+_Cyvizen_ disables the camera via GNOME Privacy Options, such that applications respecting FreeDesktop architecture will not be permitted use of the camera.
+
+NOTE: only applications that are sandboxed respect these settings at this time: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/741[Sandboxed Camera Issue]
+
+== Microphone
+
+[TIP]
+====
+_Cyvizen_ bundles https://github.com/wbolster/nothing-to-say[Gnome Shell: Nothing to Say] to the <pause> key, and displays its current status at the top right of the screen.
+
+This works irrespective of an application respecting FreeDesktop privacy settings.
+====
+
+_Cyvizen_ disables the microphone via GNOME Privacy Options, such that applications respecting FreeDesktop architecture will not be permitted use of the microphone.
+
+NOTE: only applications that are sandboxed respect these settings at this time: https://gitlab.gnome.org/GNOME/gnome-control-center/-/issues/741[Sandboxed Camera Issue]
+
+== USB
+
+_Cyvizen_ disables auto-mounting and auto-loading of USB's when the machine is locked, in its unlocked state USB's inserted into USB slots operate as expected
+
+== Usage Tracking / Metrics
+
+* _Cyvizen OEM_ does *not* collect any anonymous or otherwise tracking and/or collecting of detailed usage metrics.
+* _Cyvizen OEM_ does create a _cyvizen identifier_ and _cyptographic key_ for each user, the _public_ part of the key is uploaded to _Cyvizen's_ servers, so we can encrypt files and attachments sent to you. The _private_ part remains in your LUKS encrypted profile, we have no access to it ever.
+* _Cyvizen OEM_ does create & associate a unique _machine identifier_ and _cryptographic key_ on each physical machine it is installed on.
+* Both the your _Cyvizen_ & _Machine_ information are uploaded to _Cyvizen's_ servers for the following purposes only:
+** Total number of machines running _Cyvizen OEM_
+** Link to a _Cyvizen's_ xref:cyvizen.adoc#_cloud_profile[Cloud Profile] when using Subscription related services.
+** Customisation of _specialisation_ should you, and an organisation elect to use _Cyvizen's_ secure work profile mode.

@@ -1,0 +1,61 @@
+= Support
+
+== Updates
+
+TIP: Support Subscribers enjoy automatic updates
+
+[NOTE]
+====
+Software update or patch is a free download for an application, operating system, or software suite that provides fixes for features that aren't working as intended or adds minor software enhancements and compatibility.
+
+Software updates are released to address security issues when they occur, address minor bugs discovered in the software, improve the operation of hardware or peripherals, and add support for new models of equipment. These small, incremental updates improve the operation of your software. https://www.lifewire.com/what-is-a-software-update-vs-software-upgrade-1294256[Software Update vs Upgrade]
+
+====
+
+_Cyvizen_ updates are released periodically and are typically triggered by
+* Common Vulnerability & Exposure (CVE) patches for any Package within NixOS or NUR repositories that could put your system at risk
+* NixOS patches
+* _Cyvizen_ patches
+
+`$ cyvizen update apply` will scan for updates and apply to your system. We suggest you run this command at least once a week
+
+WARNING: `$ nix-channel --update` is disabled by _Cyvizen_ as it may cause breaking changes that have not been validated by us
+
+== Upgrades
+
+TIP: Support Subscribers can use `$ cyvizen apply --in-place` for non-destructive automated/assisted upgrades
+
+[NOTE]
+====
+Software upgrade is a new version of the software that offers a significant change or major improvement over the current version. https://www.lifewire.com/what-is-a-software-update-vs-software-upgrade-1294256[Software Update vs Upgrade]
+
+====
+
+_Cyvizen OEM_ tracks _NixOS_ releases and is Open Source. It is designed to be installed on a clean system, or as a *replacement* of an existing system.
+
+WARNING: The manual OEM installation process (without a Support Contract) is destructive and will erase all data on your machine
+
+_Cyvizen_ assigns a unique _machine identifier_ that binds to hardware and will persist through re-installation allowing your xref:cyvizen.adoc#_cloud_profile[Cyvizen Cloud Profile] to be easily restored to this machine.
+
+== Free Options
+
+=== GitHub Issues
+
+_Cyvizen OEM_ is an Open Source project, with the source code released at https://github.com/cyvive/cyvizen, community help, suggestions, feature requests can all be viewed and lodged at: https://github.com/cyvive/cyvizen/issues
+
+While team members of _Cyvizen_, and its parent _Cyvive_ do frequent GitHub issues, such support is primarily community based and not commercially backed so its a best effort option
+
+== Commercial Options
+
+=== Live Chat
+
+Live Chat is available, via the website: https://cyvizen.art
+
+=== 1 on 1
+
+If you have purchased 1 on 1 support hours, then a support representative can prioritise your support request over others. These hours don't expire, so feel free to use either of the alternative options should your request not be urgent or complex.
+
+== Roadmap
+
+_Cyvizen OEM_ roadmap, and features of _Cyvizen Binary_ are maintained on https://github.com/cyvive/cyvizen/projects
+

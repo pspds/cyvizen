@@ -1,0 +1,129 @@
+= Initial Setup
+
+NOTE: These steps are _optional_, however you will have the best user experience of _Cyvizen_ by completing them
+
+== LibreWolf
+
+== Chromium
+
+CAUTION: We recommend you use https://librewolf.net/[LibreWolf] (a hardened version of Mozilla FireFox) where possible as an alternative to _Chromium_.
+
+_Chromium_ is the open source version of _Google Chrome_ however this doesn't remove you from Google's watchful eyes and fully stripping Google integration from _Chromium_ frustratingly changes the experience. We selected https://github.com/ungoogled-software/ungoogled-chromium[Ungoogled Chromium] as the swap in replacement of _Chromium_ for _Cyvizen_.
+
+1. _ungoogled-chromium_ is Google Chromium, sans dependency on Google web services.
+2. _ungoogled-chromium_ retains the default Chromium experience as closely as possible. Unlike other Chromium forks that have their own visions of a web browser, ungoogled-chromium is essentially a drop-in replacement for Chromium.
+3. _ungoogled-chromium_ features tweaks to enhance privacy, control, and transparency. However, almost all of these features must be manually activated or enabled. For more details, see https://github.com/ungoogled-software/ungoogled-chromium#feature-overview[Feature Overview].
+
+=== Additional Steps
+
+Credit to https://avoidthehack.com/manually-install-extensions-ungoogled-chromium[Avoid The Hack: Ungoogled Chromium]
+
+https://chrome.google.com/webstore/category/extensions[Chrome Web Store] will *not* allow you to download any extensions unless you sign in with a _Google Account_.
+
+We find most _Cyvizens_ prefer *not* to have _Google_ and/or _Facebook_ watching web-browsing, or flagging your account for installing privacy / anonymity extensions.
+
+* Type `chrome://flags/#extension-mime-request-handling` into _Chromium_'s address bar, then change _Handling of extension MIME type requests_ value to _Always prompt for install_.
+* Download https://github.com/NeverDecaf/chromium-web-store/releases["Chromium Web Store"] select the `*.crx` file from the latest release (highest number) usually at the top of the page.
+* _Chromium_ will ask if you want to _Add "Chromium Web Store"_ extension, click _Add Extension_
+* You can now install extension from https://chrome.google.com/webstore/category/extensions without Google linking your extensions to your account.
+
+=== Minimum Extensions to Install
+
+CAUTION: Be careful which extensions your choose to install as they might assist in _Fingerprinting_, but at the same time, installing no extensions provides zero protection while browsing.
+
+We suggest installing the following extensions. This list may change over time, so re-check it from time to time.
+
+* https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm[uBlock Origin], tracker restriction
+* https://chrome.google.com/webstore/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk[KeePassXC-Browser], password management
+* https://chrome.google.com/webstore/detail/cookie-autodelete/fhcgjolkccmbidfldomjliifgaodjagh[Cookie AutoDelete], automatic cleanup of cookies from closed tabs
+*	https://chrome.google.com/webstore/detail/localcdn/njdfdhgcmkocbgbhcioffdbicglldapd[LocalCDN], cache files locally where possible instead of using a potentially tracked CDN endpoint
+* https://chrome.google.com/webstore/detail/aria2-for-chrome/mpkodccbngfoacfalldjimigbofkhgjn[Aria2], multi-part file downloader, Aria2 bundled/enabled as part of Cyvizen
+* https://chrome.google.com/webstore/detail/consent-o-matic/mdjildafknihdffpkfmmpnpoiajfjnjd[Consent O Matic], where possible automatically accept cookies based on your privacy preferences
+
+== KeePassXC
+
+WARNING: There is a continually resurfacing trend to use *deterministic* password managers. This is a slippery slope, and we recommend you stick with tools such as https://keepassxc.org/[KeePassXC] or https://bitwarden.com/[BitWarden] instead. You can read more about the fatal flaws of the *deterministic* password management approach at https://tonyarcieri.com/4-fatal-flaws-in-deterministic-password-managers[4 fatal flaws].
+
+A _Cyvizen_ friendly password manager needs to meet the following criteria:
+
+* Philosophy of xref:cyvizen.adoc#_cyvive_scorched_earth[Cyvive: Scorched Earth]
+* Multi-Device, Linux & Android Phone (GrapheneOS)
+* Isolation, permitting sharing of passwords when required
+* 2nd Touch capability (YubiKey/OTP etc)
+* TOTP Support to simplify 2 Factor Login
+* Encrypted, for when sharing outside of your xref:cyvizen.adoc#_cyvizen_profile[Cyvizen Profile]
+
+NOTE: KeePass has a _Key File_ option. Use of a _Key File_ *does* increase security, however it also adds another point of failure as loss of the _Key File_ just like your passphrase prevents access to the Database. We suggest using a _Key File_ if your Database will be on an untrusted platform *and* you have a mechanism for only using the _Key File_ in a ephemeral way.
+
+=== Additional Steps
+
+
+Credit to https://tobtu.com/minimum-password-settings/[Minimum Password Settings]
+
+* _Create new database_, name & description can be anything meaningful to you
+* _Advanced Settings_
+** Encryption Algorithm _ChaCha20_
+** Key Derivation Function _Argon2id_
+** Click _Benchmark 1.0s delay_
+
+Beyond changing the _Encryption Algorithm_ and _Key Derivation Function_ the default settings are generally secure enough on _KeePassXC_ and _KeePassDX_, but feel free to compare against https://tobtu.com/minimum-password-settings/[Minimum Password Settings] to double-check
+
+WARNING: Save the database into a location that is persisted as part of your xref:cyvizen.adoc#_cloud_profile[Cyvizen Profile] or onto the machine.
+
+=== Linux Integration
+
+NOTE: BitWarden, a popular and well audited cloud storage Password Manager https://community.bitwarden.com/t/support-for-libsecrets-dbus-api/4006/21[doesn't have the ability to integrate with Linux]
+
+Credit to https://c3pb.de/blog/keepassxc-secrets-service.html[KeepassXC Secrets Service]
+
+* KeePassXC -> Tools -> Settings -> Secret Service Integration -> *Tick* _Enable KeePassXC Freedesktop.org Secret Service Integration_
+* _OK_ & Restart KeePassXC
+* KeePassXC -> Tools -> Settings -> Secret Service Integration -> *Click Pencil Icon* for Databases you want to enable, then on left side, Secret Service Integration (for the Database) _Expose entries under this group_
+* _OK_
+
+Only entries under these groups will be accessible to libsecrets
+
+[IMPORTANT]
+====
+KeePassXC requires _GNOME Key Ring_ to be disabled in favour of using libsecret API directly. authentication or verification.
+
+We believe this is a sufficient security choice due to:
+
+* *TMPFS* (RAM) is used as the machine root `/`, on shutdown anything *not* persisted to xref:cyvizen.adoc#_cloud_profile[Cyvizen Profile] or this _Machine_ is erased with no method of recovery.
+* xref:cyvizen.adoc#_cloud_profile[Cyvizen Profile] is https://gitlab.com/cryptsetup/cryptsetup/-/wikis/home[Linux Unified Key Setup (LUKS)] encrypted
+* KeePassXC restricts libsecrets to secrets in mapped groups
+* 2nd touch authentications is available
+====
+
+=== Browser Integration
+
+KeePassXC by default disables Browser Integration
+
+* KeePassXC -> Tools -> Settings -> Browser Integration -> *Tick* _Enable browser integration_
+* KeePassXC -> Tools -> Settings -> Browser Integration -> *Tick* _Chromium_ _Firefox_
+* KeePassXC -> Tools -> Settings -> Browser Integration -> *Tick* _Search in all opened databases for matching credentials_
+
+=== Machine & Phone Syncing
+
+[CAUTION]
+====
+Reddit users have reported that their KeePass database becomes corrupted *(rarely)* when synchronising one database between multiple devices via a cloud storage provider i.e. _DropBox_.
+
+This happens when *both devices open the database at the same time*.
+
+If you are 100% sure that the database will not be in an unlocked state on two machines at the same time a single database sync may be a simpler approach to our recommendation below.
+====
+
+We recommend you use two databases:
+
+* Database 1: Cyvizen Linked & managed by KeePassXC
+* Database 2: GrapheneOS Linked & managed by KeePassDX
+
+This ensures that (unless you use multiple phones at the same time) your Databases will:
+
+* Only contain secrets relevant to that platform
+* Not be open on multiple devices at the same time
+
+Then _merge_ the databases together either through the GUI or via `keepass-cli`
+
+NOTE: KeePass does have a feature called KeeShare, however this only works on machines that use KeePassXC, for Android the recommended client is KeePassDX which lacks this functionality at this time.

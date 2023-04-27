@@ -1,0 +1,14 @@
+- .git
+- hardware-configuration.nix
+- result
+- self/*
+- docs
+- .rsync-exclude
+- iso
+- bin
+- .editorconfig
+- .gitignore
+- .ignore
+- README.adoc
+- shell.nix
+- .github

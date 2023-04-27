@@ -1,0 +1,402 @@
+= Day to Day Usage
+
+Computer configuration follows either, _Declarative_, _Imperative_ styles. A declarative system is a pleasure and joy to work with as you always know exactly how it will be setup, and for the most part NixOS is capable of doing everything you need Declaratively.
+
+Imperative on the other hand is a convenience and can reduce the frequency at which your machine needs to be rebooted as the risk that some things may not persist always, if you come from _Microsoft Windows_ or _OSX_ then you will be familiar with this approach
+
+== Networking
+
+NOTE: We use imperative configuration of WiFi, persisting to your xref:cyvizen.adoc#_cloud_profile[Cyvizen Profile] for convenience when using many different networks. Should you prefer a declarative approach you can install and enable https://github.com/jmackie/nixos-networkmanager-profiles[NetworkManager Profiles]
+
+Cyvizen uses _NetworkManager_ for networking, it deeply integrates with GNOME Desktop and is a popular choice on many Linux distributions.
+
+If you click the top right of the screen, where the battery icon is displayed you can see WiFi settings. This allows a quick change of available WiFi networks, just click the one you wish to connect to.
+
+IMPORTANT: Sometimes clicking the WiFi network in the top right on a secured network doesn't prompt for a password. In this case, click the _cog_ icon or go to _settings => Wi-Fi => cog icon next to the network your trying to connect to => Security => then choose the network security type and enter the password_.
+
+NetworkManager saves the connection information to a file in
+`/etc/NetworkManager/system-connections/`
+this directory is persisted to your xref:cyvizen.adoc#_cloud_profile[Cyvizen profile].
+
+CAUTION: NixOS is investigating moving from NetworkManager and the current WiFi backend WPA_Supplicant to https://www.reddit.com/r/voidlinux/comments/rapmhh/comment/hnmiliu/?utm_source=share&utm_medium=web2x&context=3[IWD alternative to WPA_Supplicant for all networking]. Should this occur and GNOME Desktop also move as part of its Wayland upgrade we will do our best to transition smoothly.
+
+== Terminal Client
+
+Cyvizen bundles https://sw.kovidgoyal.net/kitty/[Kitty] as the terminal client, when you need to enter commands recognised as lines prefixed/starting with $ you need to start _Kitty_
+
+NOTE: throughout this documentation lines starting with `$` are terminal command lines. You need to start kitty, navigate to the correct location and type the text following `$` (not `$` itself) and press <Enter> key.
+
+.common commands
+[,sh]
+----
+# you can use <tab> key to attempt to autocomplete text in the terminal
+# /		= root of disk
+# ~/	= your users home directory and is the same as /home/<your username>/
+# change directories with
+$ cd <directory path to change to>
+# list files in a directory with
+$ ls <directory path>
+# edit a file
+$ micro <file path>
+# show user manual for a command
+$ man gsettings
+# test a package from NixPkgs
+$ nix shell -p hello
+# test a package from NUR
+$ nix shell -p nur.hello
+# exit the terminal or created nix shell
+$ exit
+----
+
+== Editing Configuration Files
+
+TIP: A GUI to manage both your Cyvizen Profile, and NixOS Configuration is on the Roadmap
+
+_Cyvizen_ leverages NixOS approach of files for configuration are kept in files, we bundle two options for editing text
+
+* https://micro-editor.github.io/[Micro], a terminal based editor
+* https://www.sublimetext.com/[Sublime Text], a GUI based editor. This is the default editor when opening a file from the GUI.
+
+Both are full powered code editing platforms, and are used by professionals to work on software, yet both are very simple and familiar to learn
+
+NOTE: If you are curious and want to explore the power tools of the coding world, then https://www.vim.org/[VIM] and https://www.gnu.org/software/emacs/[EMACS] are worth a look, however these tools will require an entirely new approach to interacting with computers than your used to.
+
+== Testing, Applying & Persisting Changes
+
+When you make changes to your system there are three steps to make your changes affect the machine your running them on. This is by design to prevent accidental mistakes that may break your system
+
+* Start _Kitty_ / Terminal Client or ensure you are in the `~/` directory
+* `$ cyvizen test`
+** Synchronises your changes to the machine
+** Builds all dependencies linting and checking for errors
+** *Does not apply any changes or modify your running system in any way*
+* `$ cyvizen apply`
+** Applies changes to your running system
+** You can check the stability of your system against the new changes
+** *Will not persist through reboot, all changes are temporary only* this is risk mitigation in case you accidentally break the system, you can reboot and things will go back to before this command was executed
+** Note, if adding a GUI application, it will not appear in the GNOME list of installed applications until after reboot, you can still run it by its command name in the terminal but all its GUI dependencies may not be initialised fully until reboot.
+* `$ cyvizen persist`
+** Binds changes to the boot menu
+** Next reboot will use these latest changes by default
+** You can via boot menu select an older version in case you accidentally break the system. Selecting an older version will boot to a state prior to these changes being applied.
+
+IMPORTANT: until `cyvizen persist` is executed successfully your changes will not persist across reboots of this machine.
+
+== Structure of Cyvizen
+
+In a computing context, _Programs_ make up of _Software_ which is divided into _System_ and _Applications_, where _Applications_ are user interacting (you). An _Operating System_ manages interactions between hardware and software, and a _Package Manager_ manages the dependencies and configuration of _Software_ installed on the _Operating System_.
+
+In Cyvizen's case, we leverage https://nixos.org/guides/how-nix-works.html[NIX a _purely functional Package Manager_] the foundation of the NixOS _Operating System_ that among other technologies Cyvizen builds upon, extends, and leverages.
+
+Cyvizen, and your entire Cyvizen's custom configuration are located in _/cyvizen/nixos_ per the following layout
+
+.Cyvizen Directory Layout
+[,text]
+----
+/cyvizen/nixos/
+├── README.adoc
+├── configuration.nix - cyvizen options
+├── home-manager.nix  - home-manager options
+├── machines/
+│   └── <id>/         - specific machine relative configuration for your Cyvizen (i.e. work machine)
+├── nixos.nix         - nixos options
+├── pkgs/
+│   ├── config.nix    - your Cyvizen configuration for nixpkgs
+│   ├── default.nix   - location to override or add overlays to nixpkgs if desired
+│   ├── sources.json  - NIV managed sources
+│   └── sources.nix	  - NIV autogenerated file (DO NOT EDIT)
+├── secrets/
+│   └── sops.json     - SOPS & AGE protected secrets
+└── shell.nix         - ensures NIV is available & configured when editing via direnv & lorri
+----
+
+These files contain extensive notes to assist new and experienced users understand how to use them appropriately.
+
+== configuration.nix
+
+Cyvizen reserves the configuration option `cyvizen` as your primary interface for simple machine configuration. A lot of effort, planning and consideration has been undertaken to simplify as much as possible.
+
+.configuration.nix
+[,text]
+----
+/
+├── pkgs                - software beyond that bundled with Cyvizen that you desire
+├── firejail            - software that you want isolated from other software
+├── flatpakRemotes      - flatpak collections as an alternative / supplement to NixPkgs
+├── opensnitch          - firewall
+│   ├── allow           - names of software to permit through firewall
+│   └── block           - names of software to reject through firewall
+├── extraGroups         - additional groups that your Cyvizen should belong to
+├── description         -
+├── gnomeSettings       - GUI settings, tweaks and configuration
+├── gnomeExtensions     - GNOME Shell Extensions to Enable
+├── dconfSettings       - GNOME Shell Extensions configuration settings - see `dconf-editor`
+├── autoEspresso        - (Coffee Cup Icon, top right) pkgs for Espresso to auto enable when in use
+└── saveTo              - persistence of your data / things that are important to keep
+    ├── cyvizen         - Synced on all machines your Cyvizen linked to
+    │   ├── home        - directories from ~/
+    │   ├── homeFiles   - files from ~/
+    │   └── nixos       - directories from /
+    ├── machine         - only stored locally on a machine, if the machine is lost so is this data
+    │   ├── home        - directories from ~/
+    │   └── nixos       - directories from /
+    └── ignore          - for cyvizen-impermanence directories to ignore
+----
+
+=== Adding NixPkgs Software
+
+TIP: _Cyvizen_ has a simpler search option for software discovery: `cyvizen search`
+
+NixOS has a few different mechanisms for discovery of software
+
+* https://search.nixos.org/packages?channel=22.11&from=0&size=50&sort=relevance&type=packages[NixOS Package Search (online)]
+* `nix-locate /bin/<name of binary>` will show a list of packages that can provide this software
+* https://nur.nix-community.org/[Nix User Repositories] these are in various stages of maintenance and may not be stable use entirely at your own risk. However they can be an excellent source to learn more about Nix and how to create packages. `nur.<package name>` will install them
+
+.cyvizen.pkgs
+[,nix]
+----
+cyvizen.pkgs = [
+	"signal-desktop"
+	"hello"
+];
+----
+
+IMPORTANT: Some software requires different user groups to operate, this is done as a security and protection measure, when installing software from NixPkgs read its description to see if you need to add any additional groups to your user, and then do so via `cyvizen.extraGroups`
+
+=== Exclusion of Bundled Software
+
+If you would prefer to not have all the bundled software installed, you may exclude or remove it by adding the relevant package name to:
+
+.cyvizen.pkgsExclude
+[,nix]
+----
+cyvizen.pkgsExclude = [
+  "micro"
+];
+----
+
+=== Process Isolation
+
+Some of the principles of Cyvizen are security and privacy, Linux at this time does not typically provide process level isolation from other processes. Tools such as _SecComp_ (NSA) and _AppArmor_ were created to assist in isolating processes from other processes within a Linux system.
+
+This is an attempt at *Security by Sandboxing*, where each application is given a sandbox environment to operate in
+
+Cyvizen at this time uses https://firejail.wordpress.com/[Firejail] to provide this functionality.
+
+NOTE: We actively monitor this space, and should another alternative be better suited we will migrate to it (i.e. https://spectrum-os.org/[SpectrumOS])
+
+Firejail works by wrapping the software in AppArmor & SecComp configuration profiles as such you can either create your own profile or use one the community maintains.
+
+`$ cyvizen-firejail-profiles` will show a searchable list of all available Firejail profiles.
+
+CAUTION: Cyvizen expects the NixPkgs name to be the same as the Firejail profile i.e. _opera_ should the names be different and you need to use this package in Firejail, you will need to add it via `nixos.nix` yourself and not list it in `cyvizen.firejail`.
+
+=== Flatpak / AppImage / Docker
+
+Cyvizen & NixOS support additional package types, namely
+
+* https://www.flatpak.org/[Flatpak]
+* https://appimage.org/[AppImage]
+* https://www.docker.com/[Docker or OCI Containers]
+
+Docker is disabled by default, however it can be enabled via adding configuration to `nixos.nix` file.
+
+We suggest sticking within the NixPkgs ecosystem where possible, as these alternatives all share common challenges that are not present in NixPkgs approach to software dependencies. In saying this, we enable these alternatives to provide you the maximum flexibility and choice.
+
+NOTE: Flatpak, AppImage, Docker or OCI containers all have independent non-managed update lifecycles, you will need to keep them up to date, or trust that the code within each application checks for and notifies you to install an updated version. Software installed via `cyvizen.pkgs` will keep up to date as Cyvizen and NixOS updates automatically.
+
+=== Firewall
+
+Cyvizen uses _OpenSnitch_ to provide software level firewall. It is a very powerful firewall and ideally you should configure it rules based by <executable> -> <command line> -> <additional parameters> to accurately control or restrict traffic appropriately.
+
+_OpenSnitch_ maintains a https://github.com/evilsocket/opensnitch/wiki/Rules#best-practices[Wiki of best practices] for such complex rules.
+
+_OpenSnitch_ in the `configuration.nix` file are for convenience and _PERMIT ALL_ or _REJECT ALL_. We chose reject over deny, so applications will recognise they don't have access to the internet and respond appropriately instead of having to wait for timeouts to trigger.
+
+TIP: if you desire to leverage OpenSnitch's complex rules declaratively you may do so by specifying them in the `nixos.nix` file
+
+=== GNOME Customisation
+
+GNOME has many settings, with several different mechanisms of interacting with them. At this time Cyvizen provides support for `gsettings` and changing the values `gsettings` controls. Should you need to change settings outside this, please reach out to support.
+
+You can explore all available settings options via `$ gsettings` to find out more about how the command works `$ man gsettings` will display the user manual
+
+TIP: You may have noticed that we use `gsettings` to disable camera and microphone on boot, this is a privacy feature, it is _not_ the same as physically disconnecting the devices, and uses the same standard mechanism within the Linux Kernel to disable. You can turn these devices back on in Settings -> Privacy -> Camera or Microphone, where they will remain on until turned off or the computer rebooted
+
+TIP: favorite-apps are the ones down the bottom of the screen when you press <meta/windows> key
+
+=== Persistence or saveTo
+
+WARNING: Incorrect settings will result in data loss, handle with care, and over add directories vs under add them if concerned
+
+Cyvizen is built on TMPFS, what this means is everything on this machine exists in RAM only, and on shut-down or reboot will be cleared and lost forever *If not tagged for persistence to disk or Cyvizen profile*
+
+We link the relevant persistence directories for bundled software, however when you install new software it is very likely that the new software will create files that may need to be persisted and you will need to add these files or directories for persistence
+
+.cyvizen.
+[,text]
+----
+/
+└── saveTo
+    ├── cyvizen					- Synced on all machines your Cyvizen linked to
+    │   ├── home				- directories from ~/
+    │   ├── homeFiles		- files from ~/
+    │   └── nixos				- directories from /
+    ├── machine					- only stored locally on a machine, if the machine is lost so is this data
+    │   ├── home				- directories from ~/
+    │   └── nixos				- directories from /
+    └── ignore					- for cyvizen-impermanence directories to ignore
+----
+
+If you wanted to save the directory `~/.config/awesome` then you would add it to `cyvizen.saveTo.cyvizen.home` for persistence to your Cyvizen Profile, shared across all machines you have linked your Cyvizen Profile to.
+
+Or, alternatively if you wished to only save this directory so it would persist through reboots or shutdown of this machine, then you would add it to `cyvizen.saveTo.machine.home`
+
+Should you find some software is persisting data to a location such as `/var/lib/awesome`, then to persist to Cyvizen Profile you would add it to `cyvizen.saveTo.cyvizen.nixos` or for the machine `cyvizen.saveTo.machine.nixos`
+
+CAUTION: persistence to this machine, *does not sync* to the cloud, if the machine is lost so is the data
+
+Saving data or persisting it is quite simple:
+
+1. `$ cyvizen-impermanence` will show you a tree representation of all files in your `~/` directory that are not tagged for persistence
+2. add the relevant path to `cyvizen.saveTo.*`
+3. run the command `$ sudo cyvizen-impermanence-saveTo cyvizen.home <path>` or `$ sudo cyvizen-impermanence-saveTo machine.nixos <path>`. `cyvizen-impermanence-saveTo` accepts the same structure as in `configuration.nix`, or simply all the persistence choices above.
+
+== nixos.nix
+
+NixOS has over 10,000 configuration options, and this number grows with each release, Cyvizen has configured well in excess of 95% of the options that you may need for most computing tasks, and this has been done where possible using NixOS's mkDefault option, so should you desire a configuration option under the hood of Cyvizen may be changed.
+
+We don't restrict your ability to configure, experiment or enjoy the complexities of Linux & NixOS unless it has the potential to affect system stability. Should you encounter a error / warning with a setting you desire to change and Cyvizens configuration raise a support ticket for us to assist.
+
+https://search.nixos.org/options?channel=22.11[Available NixOS Options] can be used to locate and search for functionality. Be aware that some may require adding additional groups to your user, which you can do per <<_software_discovery>>
+
+=== Software Discovery (NixOS)
+
+NixOS options contain `programs` which are upgraded NixPkgs with additional information that may require deeper integration with NixOS structures, or programs with additional configuration that the community often wishes to specify declaratively
+
+
+https://search.nixos.org/options?channel=22.11&sort=relevance&type=packages&query=programs.[Search NixOS Programs] can be used to locate and search for these programs and their configuration options.
+
+Services, however are usually daemon packages that run in the background, they typically add additional user groups, so ensure you add necessary groups to your user per <<_software_discovery>>
+
+https://search.nixos.org/options?channel=22.11&sort=relevance&type=packages&query=services.[Search NixOS Services] can be used to locate and search for these services and their configuration options.
+
+NOTE: We consider NixOS programs and or services > NixPkgs for equivalent names, so ensure that you check both locations prior to installing a package
+
+=== Printers
+
+See relevant documentation in xref:hardware.adoc#_printing[Printing]
+
+== home-manager.nix
+
+NOTE: NixPkgs, NixOS and Home-Manager are different. While they build on eachother we consider priority to be: NixOS Option -> Home-Manager -> NixPkgs
+
+Home-Manager is a project specifically focused on easily managing your `~/` directory and not the rest of your system, while NixOS manages everything including your `~/` directory. Often functionality is added to Home-Manager initially then promoted upstream to NixOS where with a larger maintainer base better or more mature support tends to be available. Ultimately you will end up using all as they serve different purposes, and assist in keeping things as simple as possible for users.
+
+Home-Manager Options https://nix-community.github.io/home-manager/options.html[available for perusal]
+Searchable list of https://mipmip.github.io/home-manager-option-search/[Home-Manager Options]
+
+=== XDG (Cross Desktop Group)
+
+Is a specification in https://www.freedesktop.org/wiki/[FreeDesktop] for consistent home or `~/` configuration and management irrespective of which Desktop client you may choose to use. There are https://www.techradar.com/best/best-linux-desktop[many Linux Desktops] and in time you may wish to explore other options for Desktop & Window Managers.
+
+In saying this, Cyvizen ships with GNOME Desktop as it tends to be reliable, minimal, lightweight on system resources and integrations with NixOS are plentiful on most key areas.
+
+CAUTION: should you change the desktop manager, you will need to configure much of your user experience from scratch, this is a here be dragons or a deep rabbit hole journey.
+
+The benefit of Home-Manager integrating with XDG is that it makes declarative configuration of anything in the `~/` directory trivial as seen below
+
+.xdg
+[,nix]
+----
+xdg = {
+    # NOTE additional custom `home` directories can be addedd here for your Cyvizen
+    # this directory *must* also be added to `cyvizen.saveTo.<relevant_location>` for data to be saved
+    userDirs.extraConfig = {
+        # XDG_MISC_DIR = "${config.home.homeDirectory}/Misc";
+    };
+        # NOTE if you wish to automatically start applications on login, place them here following the pattern of the example below
+    configFile = {
+        # "autostart/signal.desktop".source = builtins.storePath "${pkgs.signal-desktop}/share/applications/signal.desktop";
+    };
+    dataFile = {
+    };
+};
+----
+
+== Machines
+
+TIP: Cyvizen multi-machine profiles require an active cloud backup subscription.
+
+Cyvizen is crafted to be single user, multi machine. And multi-user multi machine compatible, your Cyvizen Profile is encrypted and synchronised with the Cloud (if you have an active subscription) and can be linked to any number of machines per your choosing.
+
+This directory contains subdirectories of all machines your profile is currently linked to and should you desire, additional configuration specific to that machine to be used when logged into that specific machine.
+
+NOTE: MachineID's are a generated value, they are bound to the physical hardware installed on a machine. Not all hardware manufacturers burn into their hardware all the required information to generate a stable MachineID so if you would like to use different hardware than what Cyvizen is recommended for contact us to discuss.
+
+== Pkgs
+
+Cyvizen leverages https://github.com/nmattia/niv[NIV] for version control & management of external or out of tree packages, or additionally to easily bump versions of in-tree packages. This allows any GitHub repository to be easily added, version managed and updated with a few commands.
+
+_NIV_ does this through a `sources.json` that tracks all external packages. If you need additional functionality for instance a theme from https://www.gnome-look.org/browse/[GNOME Look] this is the method to use.
+
+[,text]
+----
+/cyvizen/nixos/pkgs/
+├── config.nix    - your Cyvizen configuration for nixpkgs
+├── default.nix   - location to override or add overlays to nixpkgs if desired
+├── sources.json  - NIV managed sources
+└── sources.nix	  - NIV autogenerated file (DO NOT EDIT)
+----
+
+=== config.nix
+
+This file symlinks to `~/.config/nixpkgs/config.nix` and contains the NixPkgs configuration for your Cyvizen user on all machines.
+
+=== default.nix
+
+The entire file is what is called an https://nixos.wiki/wiki/Overlays[Overlay], it modifies the default `pkgs` that NixOS expects to align with the versions and additional repositories added by _NIV_.
+
+There are several examples in the file of how to add your package to the overlay or modify an existing package. Also see https://github.com/nmattia/niv#usage[NIV Usage] for more tips.
+
+IMPORTANT: if you do not add nix package controlled by _NIV_ to this overlay, it will not be available for you to install.
+
+TIP: _NIV_ is capable of handling both nix packages and source code from GitHub, and these are split up into `pkgs` and `sources` in most of Cyvizens config files.
+
+=== sources.json
+
+https://github.com/nmattia/niv#usage[NIV Usage] explains the inner workings of this file, and for the most if you needed to edit this file directly it would be the `url_template` line that would be edited as it may have incorrectly generated for your specific needs. See https://github.com/nmattia/niv#using-custom-urls[Using Custom URLs] for more information.
+
+.NIV commands
+[,sh]
+----
+# show items managed by NIV
+$ niv show
+# update everything
+$ niv update
+# update just nixpkgs
+$ niv update nixpkgs
+----
+
+== Secrets
+
+=== Exposed or Public Accessible
+
+Cyvizen leverages https://github.com/mozilla/sops[Mozilla Secrets OPerationS], and https://github.com/FiloSottile/age[age file encryption] via https://github.com/Mic92/sops-nix[SOPS -> NIX]. This means that even in a multi-user, multi-machine situation your secrets can be safe as these technologies have been used together for several years to mange secrets that need to be secured while the files are visible to the eyes of the world.
+
+Nix's store, `/nix/store/` contains all the configuration and binary information used to configure and run your machine, it is a plaintext store, which means anyone can open up a file and view, not change the contents of that file. While this is convenient for 99+% of system configuration it is by default unsuitable for secret storage.
+
+https://github.com/Mic92/sops-nix[SOPS -> NIX] upgrades the Nix store to be capable of handling secrets such as your login password.
+
+As your system rebuilds itself every time it turns on or reboots, and we would like to keep your login password as far aware from an attacker as possible (as we find for most Cyvizens they are happy to use the same password as LUKS does to decrypt the disk for convenience), we ensure that your login password is locked behind LUKS on-disk and encrypted with age.
+
+This works because the local machine has an age key that can decrypt and set your login password on boot, however, it cannot access the relevant file without LUKS unlocking it.
+
+NOTE: Technically this double wrapping of secrets is redundant or tautological. However as Cyvizen is capable of multi-user, and multi-machine installations and people are encouraged to experiment with their systems as they can reboot into to a prior stable system state there is a possibility of the login password being copied to a less secure location. Hence why we use this double-encrypted approach.
+
+WARNING: `.sops.json` in your secrets directory is maintained and controlled by Cyvizen *DO NOT* delete or modify this file or may *irrevocably lock yourself out of this machine and your LUKS disks*. We deliberately list it as a hidden file in your secrets directory for this purpose, in preventing accidental modification and or deletion.
+
+=== Password Manager Secrets
+
+Cyvizen disables _GNOME KeyRing_ electing to use the _libsecret_ api directly via KeePassXC see relevant documentation in xref:initial-setup.adoc#_machine_integration[Machine Integration]
